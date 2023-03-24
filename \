@@ -1,0 +1,95 @@
+import numpy as np
+import time
+import matplotlib.pyplot as plt
+from remix import get_hierarchy
+from scipy.spatial.distance import pdist, cdist, squareform
+
+def pitch_ssm_opt(analysis):
+   y = np.array([segment['pitches'] for segment in analysis['pitches']])
+   return -cdist(pitches, pitches, 'cosine')
+
+def timbre_ssm_opt(analysis):
+    x = np.array([segment['timbre'] for segment in analysis['segments']])
+    return -cdist(timbre, timbre, 'euclidean')
+
+def segement_dist_opt(seg1, seg2):
+
+
+#naive seg dist
+def segment_dist(seg1, seg2):
+    pitch_dist = 0
+    for x1, x2 in zip(seg1['pitches'], seg2['pitches']):
+        pitch_dist += (x1 - x2) ** 2
+    pitch_dist **= (1/2)
+    timbre_dist = 0
+    for x1, x2 in zip(seg1['timbre'], seg2['timbre']):
+        timbre_dist += (x1 - x2) ** 2
+    timbre_dist **= (1/2)
+    
+    d = 10 * pitch_dist + timbre_dist
+    d += abs(seg1['loudness_start'] - seg2['loudness_start'])
+    d += abs(seg1['loudness_max'] - seg2['loudness_max'])
+    d += 100 * abs(seg1['duration'] - seg2['duration'])
+    d += abs(seg1['confidence'] - seg2['confidence'])
+    return d
+
+def segment_ssm_opt(analysis):
+    ssm = []
+    for seg1 in analysis['segments']:
+        row = []
+        for seg2 in analysis['segments']:
+            sim = -segment_dist(seg1, seg2)
+            row.append(sim)
+        ssm.append(row)
+    ssm = np.array(ssm)
+    return ssm
+
+def beat_dist(beat1, beat2):
+    segments1 = beat1['children']
+    segments2 = beat2['children']
+    if not segments1 or not segments2:
+        return 100
+
+    if beat1['index'] == beat2['index']:
+        return 100
+
+    dist = 0
+    for i, seg1 in enumerate(segments1):
+        d = 100
+        if i < len(segments2):
+            seg2 = segments2[i]
+            if seg1['index'] == seg2['index']:
+                # don't want a self-match
+                d = 100
+            else:
+                d = segment_dist(seg1, seg2)
+                dist += d
+        p_distance = 0 if 'index_in_parent' in beat1 and 'index_in_parent' in beat2 \
+                        and beat1['index_in_parent'] == beat2['index_in_parent'] else 100
+        dist /= len(segments1) or 1
+        dist += p_distance
+        return dist
+
+def beat_ssm_opt(analysis):
+
+    bsm = []
+    for seg1 in analysis['segments']:
+        row = []
+        for seg2 in analysis['segments']:
+            sim = -beat_dist(seg1, seg2)
+            row.append(sim)
+        ssm.append(row)
+    bsm = np.array(bsm)
+    return bsm 
+    
+
+def main():
+    # try things out here
+    analysis = get_hierarchy('nine inch nails', 'head like a hole')
+    t0 = time.time()
+    ssm = segment_ssm_opt(analysis)
+    t1 = time.time() - t0
+    print(t1, 'seconds')
+
+if __name__ == '__main__':
+    main()

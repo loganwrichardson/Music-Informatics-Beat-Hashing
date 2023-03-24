@@ -1,0 +1,214 @@
+for i in range(max(numsegments)
+    numsegs >= 0
+    numsegs >= 0
+
+    segment distsnce
+    where beatin bar == 0
+    and numsegments >= 2
+
+for beat in bar:
+    for segmentsindex in numsegments:
+    segmentsselfsim/dist
+
+
+np.where
+
+2/27/23
+
+for which_segment in max(num_segments);
+1) run sample code
+2) save np.save(ssm)
+3) Run your code
+rmse = (( ssm-ssm_ground_truth) **2).nuan()**(1/2)
+seedup = old_time / new_time .......... newtime = yourtime
+
+In [1]: %timeit f()
+
+x = np.zeros((N,M))
+for i in range(N);
+    for j in range(M);
+        X[i, j] = 5
+
+ways to speed 31 through 34 up
+
+x = np.full((N,M)5)
+x = 5 * np.ones((N, M))
+
+
+make a vector
+v = np.arrange(N)
+
+np.broadcast_to(V, V.reshape(-1, 1), (N, M)
+                    (N, 1) -> (N, M)
+
+np.vstack([V for _ in range(M)])
+
+other way
+v.reshape(N, 1)@np.ones((1,M))
+
+v - np.arrange(M).reshape(1, -1)
+x = np.ones((N, 1))@V
+
+
+rows = np.arrange(M).reshape(M, 1)
+cols = np.arrange(N).reshape(1, N)
+
+rows @ cols
+
+--- 
+
+another way 
+
+x = rows*cols
+rows = np.array(M) 
+cols = np.array(N)
+x = np.outer(rows,cols)
+    
+x = [1 2 3, -1 -2 -3,  5 6 7, 8 4 2 ]
+
+row where first col < 0
+cols where first row > = 2
+
+row_bool_index x = [ : , 0 ] < 0 // yields vector [F, T, F, F]
+
+col_bool_index y = [ 0, : ] > = 2 // yields vector [F, T, T]
+
+index = row_bool_index.reshape(-1, 1) @ col_bool_index.reshape(1, -1)
+
+index = row_bool_index.reshape(-1, 1) & col_bool_index.reshape(1, -1) // faster
+
+x [index] \\ = -100
+x[index] \\ [9, 10]
+
+
+========
+
+3/1/23
+beats_in_bar = bib --- index
+
+fixed value for beats in bar
+fixed value for segs in beat = sib 
+
+must compare the first segment in every bar in beat that has the same beat index
+
+bib = 0
+sib = 0
+ssm
+
+= ssm.shape
+
+np.where(np.outer(bib == 0, bib == 0)
+x[i, j].shape
+x[i, j] += ssm.ravel()
+x[bool_index] += ssm.reshape(-1, 1)
+
+
+for beatinbar in range(6)
+for seg_in_beat in range(5)
+        which beats have bib == beat in bar AND numsegments > seginbeat
+        index = (bib = beat in bar) & (num_segs > seg index)
+
+pentaly_index = (bib = beat_in bar) && (numsegs <= seginbeat)
+
+
+
+
+=================
+new assignment
+
+1) hashfunction(beat)
+    return (value, ...)
+
+2) hash map
+
+3) compute_matches(list of beats)
+    1) insert beats in hash map
+    2) for each hash
+        compare every pair of beats
+        distance < 50
+  returns list of matches
+    (source song, source beat, destination song, destination beat, distance)
+
+source song will come from the list of beats
+ -- each beat will have a source song value
+ -- destination song will come for the destination beat.  
+
+
+can resuse beat dist from previous code
+
+!! create a good hash function --- universal hashing
+
+def hash(beat):
+    return (beat['index in parent'], ) -- returns a tuble. immutable
+
+hash (beat['index in parent'], ... and another good value here. 
+Maybe number of segments ... maybe duration
+
+need to make sure you are returning a tuble so you don't run out of memory
+
+LSH - locality sensitive hashing
+
+
+3/8/23
+
+correctness
+    list match = (beat 1, beat2, dist)
+    correct: 3 matches => [(1,3), (2,4), (6,10), (3,5)]
+    submission: # matches => [(1,3), (2,4), (6,11), (6,1)]
+    #correct = TruePositive
+    FP = inSubmissionButNotCorrect
+    FN = incorrectButNotSubmission
+
+    TP = len ( correct & submission )
+    FP = len (submission - correct )
+    FN = len (correct - submission )
+
+    F score = 2TP / 2TP + FN + FP
+
+50,000 = num of beats
+the numpi array will be (len(beats), by as many things as you decide)
+
+
+def hashfunc(beats, segements):
+
+    return numpyarray = (50,000, ______) dtype = int
+
+    #the array you return will have rows = to 
+
+def populate_dictionary(beats, sgements):
+    hashes = hashfunc(beats, segmnets)
+
+    d = { }  OR d = {h : [] for h in hashes}
+    for h in hashes:
+        // go through the hashes and their corresponding beats
+        for h, b in zip(hashes, beats):
+            d[tuple(h)].append(b)
+    #for each key in the dictionary (after you populate the list) -- cast d, h to be a numpy array
+    for h in d.keys():
+        d[h] = np.array(d[h])
+
+
+d.setdefault(tuple(h), []_).append(b)
+ --- optimization of the line  d = { } OR d = {h : [] for h in hashes }
+
+
+3/10/23
+
+3/20/23
+
+hf_digitize_timbre(beats, segments)
+--- must figure out this method. Not given
+
+-- Avenues to try 
+
+SciKit-Learn - princpal components analysis
+Dimentionality reduction -- ex: timbre, reduction of coefficients
+
+2) grid search
+    loudness bins
+    duration bins
+    parameter grid  
+
+3) clutsering
+
+4) digitization
